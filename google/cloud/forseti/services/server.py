@@ -194,10 +194,6 @@ def main():
         '--enable_console_log',
         action='store_true',
         help='Print log to console.')
-    parser.add_argument(
-        '--enable-tracing',
-        action='store_true',
-        help='Toggle OpenCensus tracing on / off.')
 
     args = vars(parser.parse_args())
 

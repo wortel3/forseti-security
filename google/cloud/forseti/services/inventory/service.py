@@ -101,6 +101,10 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
                 last_warning = None
                 last_error = None
 
+            if request.enable_tracing:
+
+            else:
+
             yield inventory_pb2.Progress(
                 id=progress.inventory_index_id,
                 final_message=progress.final_message,

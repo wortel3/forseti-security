@@ -80,6 +80,11 @@ def define_inventory_parser(parent):
         action='store_true',
         help='Emit additional information for debugging.',
     )
+    create_inventory_parser.add_argument(
+        '--enable_tracing',
+        action='store_true',
+        help='Trace inventory for latency analysis when enabled.',
+    )
 
     delete_inventory_parser = action_subparser.add_parser(
         'delete',
@@ -232,14 +237,6 @@ def define_server_parser(parent):
               'the server vm or a gcs path starts with gs://).')
     )
 
-    service_parser = parent.add_parser(
-        'server',
-        help='Server config service')
-
-    action_subparser = service_parser.add_subparsers(
-        title='action',
-        dest='action')
-
     tracing_parser = action_subparser.add_parser(
         'tracing',
         help='Current Tracing mode.')
@@ -250,7 +247,7 @@ def define_server_parser(parent):
 
     set_tracing = tracing_subparser.add_parser(
         'set',
-        help='Current Tracing Mode.'
+        help='Set the tracing mode.'
     )
 
     set_tracing.add_argument(
@@ -319,6 +316,12 @@ def define_model_parser(parent):
         action='store_true',
         help='Run import in background'
     )
+    create_model_parser.add_argument(
+        '--enable_tracing',
+        default=False,
+        action='store_true',
+        help='Trace model for latency analysis when enabled'
+    )
 
 
 def define_scanner_parser(parent):
@@ -334,9 +337,16 @@ def define_scanner_parser(parent):
         title='action',
         dest='action')
 
-    action_subparser.add_parser(
+    run_parser = action_subparser.add_parser(
         'run',
         help='Run the scanner')
+
+    run_parser.add_argument(
+        '--enable_tracing',
+        default=False,
+        action='store_true',
+        help='Trace scanner for latency analysis when enabled'
+    )
 
 
 def define_notifier_parser(parent):
@@ -704,7 +714,7 @@ def run_scanner(client, config, output, _):
 
     def do_run():
         """Run a scanner."""
-        for progress in client.run():
+        for progress in client.run(config.enable_tracing):
             output.write(progress)
 
     actions = {
@@ -827,7 +837,8 @@ def run_model(client, config, output, config_env):
         result = client.new_model('inventory',
                                   config.name,
                                   int(config.inventory_index_id),
-                                  config.background)
+                                  config.background,
+                                  config.enable_tracing)
         output.write(result)
 
     def do_use_model():
@@ -869,7 +880,8 @@ def run_inventory(client, config, output, _):
         """Create an inventory."""
         for progress in client.create(config.background,
                                       config.import_as,
-                                      config.enable_debug):
+                                      config.enable_debug,
+                                      config.enable_tracing):
             output.write(progress)
 
     def do_list_inventory():
