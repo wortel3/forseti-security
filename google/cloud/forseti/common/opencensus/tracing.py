@@ -22,6 +22,9 @@ LOGGER = logger.get_logger(__name__)
 DEFAULT_INTEGRATIONS = ['requests', 'sqlalchemy']
 tracing_enabled = False
 
+def set_tracing_mode(tracing_mode):
+    tracing_enabled = tracing_mode
+
 if tracing_enabled:
     try:
         from opencensus.common.transports import async_

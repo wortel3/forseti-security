@@ -190,7 +190,7 @@ def define_server_parser(parent):
 
     log_level_parser = action_subparser.add_parser(
         'log_level',
-        help='Log level of the server testing.')
+        help='Log level of the server.')
 
     log_level_subparser = log_level_parser.add_subparsers(
         title='subaction',
@@ -270,34 +270,28 @@ def define_model_parser(parent):
     action_subparser = service_parser.add_subparsers(
         title='action',
         dest='action')
-
     use_model_parser = action_subparser.add_parser(
         'use',
         help='Context switch into the model.')
-
     use_model_parser.add_argument(
         'model',
         help='Model to switch to, either handle or name'
     )
-
     _ = action_subparser.add_parser(
         'list',
         help='List all available models')
-
     get_model_parser = action_subparser.add_parser(
         'get',
         help='Get the details of a model by name or handle')
     get_model_parser.add_argument(
         'model',
         help='Model to get')
-
     delete_model_parser = action_subparser.add_parser(
         'delete',
         help='Deletes an entire model')
     delete_model_parser.add_argument(
         'model',
         help='Model to delete, either handle or name')
-
     create_model_parser = action_subparser.add_parser(
         'create',
         help='Create a model')
@@ -772,7 +766,7 @@ def run_server(client, config, output, _):
         'tracing': {
             'get': do_get_tracing,
             'enable': do_set_tracing_enable,
-            'disable': do_set_tracing_disable()
+            'disable': do_set_tracing_disable
         },
         'configuration': {
             'get': do_get_configuration,

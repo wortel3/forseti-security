@@ -104,7 +104,7 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
                 last_error = None
 
             if request.enable_tracing:
-                tracing.tracing_enabled = True
+                tracing.set_tracing_mode(tracing_mode=True)
 
             yield inventory_pb2.Progress(
                 id=progress.inventory_index_id,

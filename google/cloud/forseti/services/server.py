@@ -51,6 +51,7 @@ def serve(endpoint,
           forseti_db_connect_string,
           config_file_path,
           enable_console_log,
+          log_level,
           enable_tracing,
           max_workers=32,
           wait_shutdown_secs=3):
