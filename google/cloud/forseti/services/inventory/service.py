@@ -20,6 +20,7 @@ from google.cloud.forseti.services.inventory import inventory_pb2
 from google.cloud.forseti.services.inventory import inventory_pb2_grpc
 from google.cloud.forseti.services.inventory import inventory
 from google.cloud.forseti.services.utils import autoclose_stream
+from google.cloud.forseti.common.opencensus import tracing
 
 # pylint: disable=no-member
 
@@ -92,7 +93,8 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
         """
 
         for progress in self.inventory.create(request.background,
-                                              request.model_name):
+                                              request.model_name,
+                                              request.enable_tracing):
 
             if request.enable_debug:
                 last_warning = repr(progress.last_warning)
@@ -102,8 +104,7 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
                 last_error = None
 
             if request.enable_tracing:
-
-            else:
+                tracing.tracing_enabled = True
 
             yield inventory_pb2.Progress(
                 id=progress.inventory_index_id,

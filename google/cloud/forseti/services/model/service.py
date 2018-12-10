@@ -19,6 +19,7 @@ from google.cloud.forseti.services.model import model_pb2
 from google.cloud.forseti.services.model import model_pb2_grpc
 from google.cloud.forseti.services.model import modeller
 from google.cloud.forseti.common.util import logger
+from google.cloud.forseti.common.opencensus import tracing
 
 LOGGER = logger.get_logger(__name__)
 
@@ -80,7 +81,10 @@ class GrpcModeller(model_pb2_grpc.ModellerServicer):
         model = self.modeller.create_model(request.type,
                                            request.name,
                                            request.id,
-                                           request.background)
+                                           request.background,
+                                           request.enable_tracing)
+        if request.enable_tracing:
+            tracing.tracing_enabled = True
         created_at_str = self._get_model_created_at_str(model)
         LOGGER.debug('Model %s created at: %s', model, created_at_str)
         reply = model_pb2.CreateModelReply(model=model_pb2.ModelSimplified(

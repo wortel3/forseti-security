@@ -20,6 +20,7 @@ import logging
 from google.cloud.forseti.services.server_config import server_pb2
 from google.cloud.forseti.services.server_config import server_pb2_grpc
 from google.cloud.forseti.common.util import logger
+from google.cloud.forseti.common.opencensus import tracing
 
 
 LOGGER = logger.get_logger(__name__)
@@ -144,7 +145,7 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
         """
         del request
 
-        tracing_mode = logging.getLevelName(LOGGER.getEffectiveLevel())
+        tracing_mode = tracing.tracing_enabled
 
         LOGGER.info('Retrieving tracing mode, tracing_mode = %s',
                     tracing_mode)
@@ -166,7 +167,7 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
         try:
             LOGGER.info('Enabling tracing, tracing_mode = %s',
                         request.tracing_mode)
-            logger.set_logger_level(logger.LOGLEVELS[request.log_level])
+            tracing.tracing_enabled = True
         except Exception as e:  # pylint: disable=broad-except
             LOGGER.exception(e)
             err_msg = e.message
@@ -191,7 +192,7 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
         try:
             LOGGER.info('Disabling tracing, tracing_mode = %s',
                         request.tracing_mode)
-            logger.set_logger_level(logger.LOGLEVELS[request.log_level])
+            tracing.tracing_enabled = False
         except Exception as e:  # pylint: disable=broad-except
             LOGGER.exception(e)
             err_msg = e.message
