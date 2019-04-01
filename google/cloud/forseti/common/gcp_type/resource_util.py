@@ -18,6 +18,7 @@ from google.cloud.forseti.common.gcp_type import backend_service
 from google.cloud.forseti.common.gcp_type import billing_account
 from google.cloud.forseti.common.gcp_type import bucket
 from google.cloud.forseti.common.gcp_type import cloudsql_instance
+from google.cloud.forseti.common.gcp_type import crypto_key
 from google.cloud.forseti.common.gcp_type import ke_cluster
 from google.cloud.forseti.common.gcp_type import dataset
 from google.cloud.forseti.common.gcp_type import folder
@@ -37,6 +38,11 @@ _RESOURCE_TYPE_MAP = {
     resource.ResourceType.BILLING_ACCOUNT: {
         'class': billing_account.BillingAccount,
         'plural': 'Billing Accounts',
+        'can_create_resource': True,
+    },
+    resource.ResourceType.CRYPTO_KEY: {
+        'class': crypto_key.CryptoKey,
+        'plural': 'Crypto Keys',
         'can_create_resource': True,
     },
     resource.ResourceType.FOLDER: {

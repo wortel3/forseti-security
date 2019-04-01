@@ -33,6 +33,7 @@ SUPPORTED_RULE_RESOURCE_TYPES = frozenset(['project', 'folder', 'organization'])
 SUPPORTED_LOCATION_RESOURCE_TYPES = frozenset([
     resource.ResourceType.BUCKET,
     resource.ResourceType.CLOUD_SQL_INSTANCE,
+    resource.ResourceType.CRYPTO_KEY,
     resource.ResourceType.DATASET,
     resource.ResourceType.INSTANCE,
     resource.ResourceType.KE_CLUSTER,

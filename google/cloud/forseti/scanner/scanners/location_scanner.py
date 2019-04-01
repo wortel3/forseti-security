@@ -74,8 +74,15 @@ class LocationScanner(base_scanner.BaseScanner):
             for resource_type in lre.SUPPORTED_LOCATION_RESOURCE_TYPES:
                 for resource in data_access.scanner_iter(
                         session, resource_type):
+                    print('resource parent type:', resource.parent.type)
+                    # if resource.parent.type == 'project':
+                    #     continue
+                    if resource_type == 'bucket':
+                        continue
 
-                    if resource.parent.type != 'project':
+                    # if resource.parent.type != 'project' or resource.parent.type != 'kms_keyring':
+                    # if (resource.parent.type != 'project' or resource.parent.type != 'kms_keyring'):
+                    if not (resource.parent.type == 'project' or resource.parent.type == 'kms_keyring'):
                         raise ValueError(
                             'Unexpected type of parent resource type: '
                             'got %s, want project' % resource.parent.type
