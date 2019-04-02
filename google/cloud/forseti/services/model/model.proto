@@ -34,7 +34,6 @@ message CreateModelRequest {
   string name = 2;
   int64 id = 3;
   bool background = 4;
-  bool enable_tracing = 5;
 }
 
 message CreateModelReply {

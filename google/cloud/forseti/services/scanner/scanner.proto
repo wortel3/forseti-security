@@ -23,9 +23,7 @@ service Scanner {
 
 }
 
-message RunRequest {
-  bool enable_tracing = 1;
-}
+message RunRequest {}
 
 message Progress {
   string server_message = 1;

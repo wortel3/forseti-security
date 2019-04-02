@@ -80,11 +80,6 @@ def define_inventory_parser(parent):
         action='store_true',
         help='Emit additional information for debugging.',
     )
-    create_inventory_parser.add_argument(
-        '--enable_tracing',
-        action='store_true',
-        help='Trace inventory for latency analysis when enabled.',
-    )
 
     delete_inventory_parser = action_subparser.add_parser(
         'delete',
@@ -310,12 +305,6 @@ def define_model_parser(parent):
         action='store_true',
         help='Run import in background'
     )
-    create_model_parser.add_argument(
-        '--enable_tracing',
-        default=False,
-        action='store_true',
-        help='Trace model for latency analysis when enabled'
-    )
 
 
 def define_scanner_parser(parent):
@@ -334,13 +323,6 @@ def define_scanner_parser(parent):
     run_parser = action_subparser.add_parser(
         'run',
         help='Run the scanner')
-
-    run_parser.add_argument(
-        '--enable_tracing',
-        default=False,
-        action='store_true',
-        help='Trace scanner for latency analysis when enabled'
-    )
 
 
 def define_notifier_parser(parent):

@@ -54,7 +54,6 @@ message CreateRequest {
   bool background = 1;
   string model_name = 2;
   bool enable_debug = 3;
-  bool enable_tracing = 4
 }
 
 message ListRequest {

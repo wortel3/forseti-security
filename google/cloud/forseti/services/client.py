@@ -257,7 +257,8 @@ class ServerConfigClient(ForsetiClient):
         Returns:
             proto: the returned proto message.
         """
-        request = server_pb2.SetLogLevelRequest(tracing_mode=tracing_mode)
+        request = server_pb2.SetTracingDisablelRequest(
+            tracing_mode=tracing_mode)
         return self.stub.SetTracingDisable(request)
 
 

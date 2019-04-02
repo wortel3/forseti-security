@@ -81,10 +81,7 @@ class GrpcModeller(model_pb2_grpc.ModellerServicer):
         model = self.modeller.create_model(request.type,
                                            request.name,
                                            request.id,
-                                           request.background,
-                                           request.enable_tracing)
-        if request.enable_tracing:
-            tracing.set_tracing_mode(tracing_mode=True)
+                                           request.background)
         created_at_str = self._get_model_created_at_str(model)
         LOGGER.debug('Model %s created at: %s', model, created_at_str)
         reply = model_pb2.CreateModelReply(model=model_pb2.ModelSimplified(

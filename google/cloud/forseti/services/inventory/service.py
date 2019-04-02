@@ -93,8 +93,7 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
         """
 
         for progress in self.inventory.create(request.background,
-                                              request.model_name,
-                                              request.enable_tracing):
+                                              request.model_name):
 
             if request.enable_debug:
                 last_warning = repr(progress.last_warning)
@@ -102,9 +101,6 @@ class GrpcInventory(inventory_pb2_grpc.InventoryServicer):
             else:
                 last_warning = None
                 last_error = None
-
-            if request.enable_tracing:
-                tracing.set_tracing_mode(tracing_mode=True)
 
             yield inventory_pb2.Progress(
                 id=progress.inventory_index_id,
