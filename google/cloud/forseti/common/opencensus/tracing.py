@@ -20,29 +20,41 @@ from google.cloud.forseti.common.util import logger
 
 LOGGER = logger.get_logger(__name__)
 DEFAULT_INTEGRATIONS = ['requests', 'sqlalchemy']
-tracing_enabled = False
+OPENCENSUS_ENABLED = False
 
 def set_tracing_mode(tracing_mode):
-    tracing_enabled = tracing_mode
+    OPENCENSUS_ENABLED = tracing_mode
 
-if tracing_enabled:
-    try:
-        from opencensus.common.transports import async_
-        from opencensus.trace import config_integration
-        from opencensus.trace import execution_context
-        from opencensus.trace.exporters import file_exporter
-        from opencensus.trace.exporters import stackdriver_exporter
-        from opencensus.trace.ext.grpc import client_interceptor
-        from opencensus.trace.ext.grpc import server_interceptor
-        from opencensus.trace.samplers import always_on
-        from opencensus.trace.tracer import Tracer
-        from opencensus.trace.span import SpanKind
-        OPENCENSUS_ENABLED = True
-    except ImportError:
-        LOGGER.warning(
-            'Cannot enable tracing because the `opencensus` library was not '
-            'found. Run `pip install .[tracing]` to install tracing libraries.')
-        OPENCENSUS_ENABLED = False
+
+def conditional_import_modues(OPENCENSUS_ENABLED):
+    if OPENCENSUS_ENABLED:
+        try:
+            global async_
+            from opencensus.common.transports import async_
+            global config_integration
+            from opencensus.trace import config_integration
+            global execution_context
+            from opencensus.trace import execution_context
+            global file_exporter
+            from opencensus.trace.exporters import file_exporter
+            global stackdriver_exporter
+            from opencensus.trace.exporters import stackdriver_exporter
+            global client_interceptor
+            from opencensus.trace.ext.grpc import client_interceptor
+            global server_interceptor
+            from opencensus.trace.ext.grpc import server_interceptor
+            global always_on
+            from opencensus.trace.samplers import always_on
+            global Tracer
+            from opencensus.trace.tracer import Tracer
+            global SpanKind
+            from opencensus.trace.span import SpanKind
+            OPENCENSUS_ENABLED = True
+        except ImportError:
+            LOGGER.warning(
+                'Cannot enable tracing because the `opencensus` library was not '
+                'found. Run `pip install .[tracing]` to install tracing libraries.')
+            OPENCENSUS_ENABLED = False
 
 
 def create_client_interceptor(endpoint):
