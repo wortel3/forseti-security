@@ -18,8 +18,6 @@ import binascii
 import os
 import grpc
 
-from google.cloud.forseti.common.opencensus import tracing
-
 from google.cloud.forseti.services.explain import explain_pb2
 from google.cloud.forseti.services.explain import explain_pb2_grpc
 from google.cloud.forseti.services.inventory import inventory_pb2
@@ -145,7 +143,7 @@ class ScannerClient(ForsetiClient):
         return echo == data
 
     @require_model
-    def run(self, enable_tracing=False):
+    def run(self):
         """Runs the scanner
 
         Args:
@@ -154,8 +152,7 @@ class ScannerClient(ForsetiClient):
         Returns:
             proto: the returned proto message.
         """
-        request = scanner_pb2.RunRequest(
-            enable_tracing=enable_tracing)
+        request = scanner_pb2.RunRequest()
         return self.stub.Run(request,
                              metadata=self.metadata())
 
@@ -245,7 +242,8 @@ class ServerConfigClient(ForsetiClient):
         Returns:
             proto: the returned proto message.
         """
-        request = server_pb2.SetTracingEnableRequest(tracing_mode=tracing_mode)
+        request = server_pb2.SetTracingEnableRequest(
+            enable_tracing=tracing_mode)
         return self.stub.SetTracingEnable(request)
 
     def set_tracing_disable(self, tracing_mode):
@@ -257,8 +255,8 @@ class ServerConfigClient(ForsetiClient):
         Returns:
             proto: the returned proto message.
         """
-        request = server_pb2.SetTracingDisablelRequest(
-            tracing_mode=tracing_mode)
+        request = server_pb2.SetTracingDisableRequest(
+            disable_tracing=tracing_mode)
         return self.stub.SetTracingDisable(request)
 
 

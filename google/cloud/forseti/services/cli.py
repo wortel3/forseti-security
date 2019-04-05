@@ -240,18 +240,30 @@ def define_server_parser(parent):
         title='subaction',
         dest='subaction')
 
-    set_tracing = tracing_subparser.add_parser(
-        'set',
-        help='Set the tracing mode.'
-    )
+    # set_tracing = tracing_subparser.add_parser(
+    #     'set',
+    #     help='Set the tracing mode.'
+    # )
+    #
+    # set_tracing.add_argument(
+    #     'tracing',
+    #     choices=['enable', 'disable'])
 
-    set_tracing.add_argument(
-        'tracing',
-        choices=['enable', 'disable'])
+    # tracing_parser.add_argument(
+    #     'tracing',
+    #     choices=['enable', 'disable'])
 
     _ = tracing_subparser.add_parser(
         'get',
         help='Get the tracing mode.')
+
+    _ = tracing_subparser.add_parser(
+        'enable',
+        help='Enable tracing mode.')
+
+    _ = tracing_subparser.add_parser(
+        'disable',
+        help='Disable tracing mode.')
 
 
 def define_model_parser(parent):
@@ -733,12 +745,11 @@ def run_server(client, config, output, _):
 
     def do_set_tracing_enable():
         """Set the tracing mode to enable."""
-        output.write(client.set_tracing_enable(config.tracing_mode))
+        output.write(client.set_tracing_enable('TRUE'))
 
     def do_set_tracing_disable():
         """Set the tracing mode to disable."""
-        output.write(client.set_tracing_disable(config.tracing_mode))
-
+        output.write(client.set_tracing_disable('FALSE'))
 
     actions = {
         'log_level': {

@@ -145,12 +145,12 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
         """
         del request
 
-        tracing_mode = tracing.tracing_enabled
+        tracing_mode = tracing.OPENCENSUS_ENABLED
 
         LOGGER.info('Retrieving tracing mode, tracing_mode = %s',
                     tracing_mode)
 
-        return server_pb2.GetTracingReply(tracing_mode=tracing_mode)
+        return server_pb2.GetTracingReply(tracing_mode=str(tracing_mode))
 
     def SetTracingEnable(self, request, _):
         """Tracing Enable.
@@ -166,9 +166,9 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
 
         try:
             LOGGER.info('Enabling tracing, tracing_mode = %s',
-                        request.tracing_mode)
-            tracing.set_tracing_mode(request.tracing_mode)
-            tracing.conditional_import_modues(request.tracing_mode)
+                        request.enable_tracing)
+            tracing.set_tracing_mode(bool(request.enable_tracing))
+            tracing.conditional_import_modues(bool(request.enable_tracing))
         except Exception as e:  # pylint: disable=broad-except
             LOGGER.exception(e)
             err_msg = e.message
@@ -192,8 +192,9 @@ class GrpcServiceConfig(server_pb2_grpc.ServerServicer):
 
         try:
             LOGGER.info('Disabling tracing, tracing_mode = %s',
-                        request.tracing_mode)
-            tracing.set_tracing_mode(request.tracing_mode)
+                        request.disable_tracing)
+            tracing.set_tracing_mode(bool(request.disable_tracing))
+            tracing.conditional_import_modues(bool(request.disable_tracing))
         except Exception as e:  # pylint: disable=broad-except
             LOGGER.exception(e)
             err_msg = e.message

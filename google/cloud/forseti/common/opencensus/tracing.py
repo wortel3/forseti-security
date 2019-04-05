@@ -22,6 +22,7 @@ LOGGER = logger.get_logger(__name__)
 DEFAULT_INTEGRATIONS = ['requests', 'sqlalchemy']
 OPENCENSUS_ENABLED = False
 
+
 def set_tracing_mode(tracing_mode):
     OPENCENSUS_ENABLED = tracing_mode
 
@@ -55,6 +56,8 @@ def conditional_import_modues(OPENCENSUS_ENABLED):
                 'Cannot enable tracing because the `opencensus` library was not '
                 'found. Run `pip install .[tracing]` to install tracing libraries.')
             OPENCENSUS_ENABLED = False
+        except Exception as e:
+            LOGGER.warning('Exception:', e)
 
 
 def create_client_interceptor(endpoint):
