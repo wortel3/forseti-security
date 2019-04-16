@@ -229,6 +229,7 @@ class LocationRuleBook(base_rules_engine.BaseRuleBook):
 
         resource_ancestors = relationship.find_ancestors(
             res, res.full_name)
+        print('resource ancestors:', resource_ancestors)
 
         rules = []
         for ancestor_res in resource_ancestors:
@@ -236,6 +237,7 @@ class LocationRuleBook(base_rules_engine.BaseRuleBook):
 
         type_resource_wildcard = resource_util.create_resource(
             resource_id='*', resource_type=res.type)
+        print('type resource wildcard:', type_resource_wildcard)
 
         rules.extend(self.resource_to_rules.get(type_resource_wildcard, []))
 
@@ -283,6 +285,8 @@ class Rule(object):
         applicable_resources = self.applies_to.get(res.type, [])
         applicable_resources.extend(self.applies_to.get('*', []))
         applicable_resources = set(applicable_resources)
+        print('applicable resources:', applicable_resources)
+        print('res locations:', res.locations)
 
         if applicable_resources != {'*'} and (
                 res.id not in applicable_resources):

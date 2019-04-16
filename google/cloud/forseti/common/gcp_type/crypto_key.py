@@ -32,7 +32,7 @@ class CryptoKey(resource.Resource):
 
     # pylint: disable=too-many-instance-attributes, too-many-arguments, expression-not-assigned
     def __init__(
-            self, crypto_key_name=None, crypto_key_full_name=None,
+            self, crypto_key_name=None, full_name=None,
             crypto_key_parent_type_name=None, crypto_key_type=None,
             primary_version=None, purpose=None, create_time=None,
             next_rotation_time=None, version_template=None, labels=None,
@@ -41,7 +41,7 @@ class CryptoKey(resource.Resource):
 
         Args:
             crypto_key_name (str): The unique Cryptokey id.
-            crypto_key_full_name (str): The Cryptokey full name.
+            full_name (str): The Cryptokey full name.
             crypto_key_parent_type_name (Resource): Resource this Cryptokey
             belongs to.
             crypto_key_type (str): The Cryptokey type name.
@@ -59,7 +59,7 @@ class CryptoKey(resource.Resource):
             name=crypto_key_name,
             parent=crypto_key_parent_type_name,
             resource_type=resource.ResourceType.CRYPTO_KEY),
-        self.crypto_key_full_name = crypto_key_full_name
+        self.full_name = full_name
         self.crypto_key_type = crypto_key_type
         self.primary_version = primary_version
         self.purpose = purpose
@@ -71,13 +71,13 @@ class CryptoKey(resource.Resource):
         self.data = data
 
     @classmethod
-    def from_json(cls, crypto_key_name, crypto_key_full_name,
+    def from_json(cls, crypto_key_name, full_name,
                   crypto_key_parent_type_name, crypto_key_type, json_string):
         """Returns a new CryptoKey object from a JSON object.
 
         Args:
             crypto_key_name (str): The unique Cryptokey id.
-            crypto_key_full_name (str): The Cryptokey full name.
+            full_name (str): The Cryptokey full name.
             crypto_key_parent_type_name (str): The Cryptokey parent type name.
             crypto_key_type (str): The Cryptokey type name.
             json_string(str): JSON string of a Cryptokey GCP API response.
@@ -89,7 +89,7 @@ class CryptoKey(resource.Resource):
 
         return cls(
             crypto_key_name=crypto_key_name,
-            crypto_key_full_name=crypto_key_full_name,
+            full_name=full_name,
             crypto_key_parent_type_name=crypto_key_parent_type_name,
             crypto_key_type=crypto_key_type,
             primary_version=key_dict.get('primary', {}),

@@ -15,6 +15,7 @@
 """Scanner for the resource location rules engine."""
 
 
+from google.cloud.forseti.common.gcp_type import crypto_key
 from google.cloud.forseti.common.gcp_type import project
 from google.cloud.forseti.common.gcp_type import resource_util
 from google.cloud.forseti.common.util import logger
@@ -74,26 +75,28 @@ class LocationScanner(base_scanner.BaseScanner):
             for resource_type in lre.SUPPORTED_LOCATION_RESOURCE_TYPES:
                 for resource in data_access.scanner_iter(
                         session, resource_type):
-                    print('resource parent type:', resource.parent.type)
-                    # if resource.parent.type == 'project':
-                    #     continue
-                    if resource_type == 'bucket':
-                        continue
 
-                    # if resource.parent.type != 'project' or resource.parent.type != 'kms_keyring':
-                    # if (resource.parent.type != 'project' or resource.parent.type != 'kms_keyring'):
-                    if not (resource.parent.type == 'project' or resource.parent.type == 'kms_keyring'):
+                    if not (resource.parent.type == 'project' or
+                            resource.parent.type == 'kms_keyring'):
                         raise ValueError(
                             'Unexpected type of parent resource type: '
                             'got %s, want project' % resource.parent.type
                         )
 
-                    proj = project.Project(
-                        project_id=resource.parent.name,
-                        full_name=resource.parent.full_name,
-                    )
-                    resources.append(resource_util.create_resource_from_json(
-                        resource_type, proj, resource.data))
+                    if resource.parent.type == 'project':
+                        proj = project.Project(
+                            project_id=resource.parent.name,
+                            full_name=resource.parent.full_name,
+                        )
+                        resources.append(resource_util.create_resource_from_json
+                                         (resource_type, proj, resource.data))
+                    else:
+                        resources.append(crypto_key.CryptoKey.from_json(
+                            resource.name,
+                            resource.full_name,
+                            resource.parent_type_name,
+                            resource.type,
+                            resource.data))
 
         return resources
 

@@ -226,9 +226,10 @@ class KMSRuleBook(bre.BaseRuleBook):
                      key.name)
         violations = []
         resource_ancestors = resource_util.get_ancestors_from_full_name(
-            key.crypto_key_full_name)
+            key.full_name)
 
         LOGGER.debug('Ancestors of resource: %r', resource_ancestors)
+        print('kms Ancestors of resource:', resource_ancestors)
 
         checked_wildcards = set()
         for curr_resource in resource_ancestors:
@@ -496,7 +497,7 @@ class Rule(object):
                     resource_id=key.id,
                     resource_type=key.type,
                     resource_name=key.id,
-                    full_name=key.crypto_key_full_name,
+                    full_name=key.full_name,
                     rule_index=self.rule_index,
                     rule_name=self.rule_name,
                     violation_type=VIOLATION_TYPE,
