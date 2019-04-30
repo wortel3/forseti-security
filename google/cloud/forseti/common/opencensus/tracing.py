@@ -24,7 +24,11 @@ OPENCENSUS_ENABLED = False
 
 
 def set_tracing_mode(tracing_mode):
+    global OPENCENSUS_ENABLED
     OPENCENSUS_ENABLED = tracing_mode
+
+
+from opencensus.common.transports import async_
 
 
 def conditional_import_modues(OPENCENSUS_ENABLED):

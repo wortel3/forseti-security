@@ -81,6 +81,7 @@ def create_interceptors(endpoint):
     """
     interceptors = []
     if tracing.OPENCENSUS_ENABLED:
+        tracing.conditional_import_modues(tracing.OPENCENSUS_ENABLED)
         # It's okay for this to be enabled on the client, even if the tracing
         # flag is disabled on the server.
         interceptors.append(tracing.create_client_interceptor(endpoint))
