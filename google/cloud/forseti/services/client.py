@@ -147,9 +147,6 @@ class ScannerClient(ForsetiClient):
     def run(self):
         """Runs the scanner
 
-        Args:
-            enable_tracing (bool): whether to enable tracing.
-
         Returns:
             proto: the returned proto message.
         """
@@ -418,7 +415,7 @@ class InventoryClient(ForsetiClient):
         echo = self.stub.Ping(inventory_pb2.PingRequest(data=data)).data
         return echo == data
 
-    def create(self, background=False, import_as=None, enable_debug=False, enable_tracing=False):
+    def create(self, background=False, import_as=None, enable_debug=False):
         """Creates a new inventory, with an optional import.
 
         Args:
@@ -427,8 +424,6 @@ class InventoryClient(ForsetiClient):
                 inventory is created
             enable_debug (bool): whether to emit additional information
                 for debugging
-            enable_tracing (bool): whether to enable tracing for
-                latency analysis
 
         Returns:
             proto: the returned proto message of create inventory
@@ -437,8 +432,7 @@ class InventoryClient(ForsetiClient):
         request = inventory_pb2.CreateRequest(
             background=background,
             model_name=import_as,
-            enable_debug=enable_debug,
-            enable_tracing=enable_tracing)
+            enable_debug=enable_debug)
         return self.stub.Create(request)
 
     def get(self, inventory_index_id):
@@ -801,7 +795,7 @@ class ClientComposition(object):
             if not all([c.is_available() for c in self.clients]):
                 raise Exception('gRPC connected but services not registered')
 
-    def new_model(self, source, name, inventory_index_id=0, background=False, enable_tracing=False):
+    def new_model(self, source, name, inventory_index_id=0, background=False):
         """Create a new model from the specified source.
 
         Args:
@@ -811,14 +805,13 @@ class ClientComposition(object):
             inventory_index_id (int64): the index id of the inventory to
                 import from.
             background (bool): whether to run in background.
-            enable_tracing (bool): whether to enable tracing.
 
         Returns:
             proto: the returned proto message of creating model
         """
 
         return self.model.new_model(source, name, inventory_index_id,
-                                    background, enable_tracing)
+                                    background)
 
     def list_models(self):
         """List existing models.

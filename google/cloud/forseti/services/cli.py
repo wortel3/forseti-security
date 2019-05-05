@@ -80,6 +80,11 @@ def define_inventory_parser(parent):
         action='store_true',
         help='Emit additional information for debugging.',
     )
+    create_inventory_parser.add_argument(
+        '--enable_tracing',
+        action='store_true',
+        help='Emit additional information for tracing.',
+    )
 
     delete_inventory_parser = action_subparser.add_parser(
         'delete',
@@ -867,8 +872,7 @@ def run_inventory(client, config, output, _):
         """Create an inventory."""
         for progress in client.create(config.background,
                                       config.import_as,
-                                      config.enable_debug,
-                                      config.enable_tracing):
+                                      config.enable_debug):
             output.write(progress)
 
     def do_list_inventory():
