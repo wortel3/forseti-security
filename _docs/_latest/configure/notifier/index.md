@@ -248,8 +248,6 @@ in the Forseti project server bucket, edit the `configs/forseti_conf_server.yaml
     * **Valid values**: one of valid `true` or `false`
   
   * `source_id`
-    * **Description**: ID from the Cloud SCC beta on-boarding. **This must be added**
-    to use the Beta API integration.
     * **Valid values**: String
     * **Note**: It is in the form: source_id: <organizations/ORG_ID/sources/SOURCE_ID>
 
